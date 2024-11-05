@@ -1,49 +1,49 @@
-.userList {
+.userListContainer {
+  max-width: 600px;
+  margin: 20px auto; /* Отступ от верхнего и боковых краев */
   padding: 20px;
+  border: 2px solid black; /* Черная рамка вокруг всей таблицы */
+  border-radius: 8px;
+  text-align: center;
+}
+
+.searchInput {
+  width: 90%; /* Отступ от краев */
+  padding: 8px;
+  margin-bottom: 15px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 4px;
+}
 
-  h1 {
-    color: #333;
-    margin-bottom: 20px;
-  }
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
 
-  .table {
-    width: 100%;
-    border-collapse: collapse;
+.table th,
+.table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
 
-    th,
-    td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
+.table th {
+  background-color: #f4f4f4;
+}
 
-    th {
-      background-color: #f4f4f4;
-      color: #666;
-    }
+.userName a {
+  color: #1a0dab;
+  text-decoration: none;
+}
 
-    tr:hover {
-      background-color: #f1f1f1;
-    }
+.userName a:hover {
+  text-decoration: underline;
+}
 
-    .userName {
-      color: #4a86e8; // Цвет для имени пользователя
-      font-weight: bold;
+.userStatus {
+  color: #28a745;
+}
 
-      &:hover {
-        text-decoration: underline; // Подчеркивание при наведении
-      }
-    }
-
-    .userStatus {
-      color: green; // Зелёный цвет для статуса активного пользователя
-      font-weight: bold;
-
-      &.inactive {
-        color: red; // Красный цвет для статуса неактивного пользователя
-      }
-    }
-  }
+.userStatus:empty {
+  color: #dc3545;
 }

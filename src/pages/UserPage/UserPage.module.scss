@@ -1,0 +1,66 @@
+.userPageContainer {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid black;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.formGroup {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+
+  label {
+    width: 100px;
+    font-weight: bold;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+}
+
+.disabledInput {
+  background-color: #f0f0f0;
+  color: #666;
+  pointer-events: none;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.editButton,
+.saveButton,
+.cancelButton {
+  padding: 8px 12px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: white;
+}
+
+.saveButton {
+  background-color: #4caf50;
+  color: white;
+}
+
+.cancelButton {
+  background-color: #f44336;
+  color: white;
+}
