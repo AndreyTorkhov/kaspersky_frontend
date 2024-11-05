@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { userStore } from "../../store/UserStore";
+import Button from "../../components/Button";
+import styles from "./UserPage.module.scss";
 
 const UserPage = observer(() => {
   const { id } = useParams<{ id: string }>();
@@ -20,80 +22,81 @@ const UserPage = observer(() => {
     return <div>Loading...</div>;
   }
 
+  const inputClass = userStore.isEditing
+    ? styles.enabledInput
+    : styles.disabledInput;
+
   return (
-    <div>
-      <h1>User Settings</h1>
-      <div>
+    <div className={styles.userContainer}>
+      <h1 className={styles.title}>User Settings</h1>
+      <div className={styles.formGroup}>
+        <label>Name:</label>
+        <input
+          type="text"
+          value={userStore.name}
+          onChange={(e) => (userStore.name = e.target.value)}
+          className={inputClass}
+          disabled={!userStore.isEditing}
+        />
+      </div>
+      <div className={styles.formGroup}>
+        <label>Surname:</label>
+        <input
+          type="text"
+          value={userStore.surname}
+          onChange={(e) => (userStore.surname = e.target.value)}
+          className={inputClass}
+          disabled={!userStore.isEditing}
+        />
+      </div>
+      <div className={`${styles.formGroup} ${styles.statusGroup}`}>
+        <label>Status:</label>
         <label>
-          Name:
           <input
-            type="text"
-            value={userStore.name}
-            onChange={(e) => (userStore.name = e.target.value)}
+            type="radio"
+            checked={userStore.status}
+            onChange={() => (userStore.status = true)}
             disabled={!userStore.isEditing}
+            className={inputClass}
           />
+          Active
         </label>
-      </div>
-      <div>
         <label>
-          Surname:
           <input
-            type="text"
-            value={userStore.surname}
-            onChange={(e) => (userStore.surname = e.target.value)}
+            type="radio"
+            checked={!userStore.status}
+            onChange={() => (userStore.status = false)}
             disabled={!userStore.isEditing}
+            className={inputClass}
           />
+          Inactive
         </label>
       </div>
-      <div>
-        <label>
-          Status:
-          <label>
-            <input
-              type="radio"
-              checked={userStore.status}
-              onChange={() => (userStore.status = true)}
-              disabled={!userStore.isEditing}
-            />
-            Active
-          </label>
-          <label>
-            <input
-              type="radio"
-              checked={!userStore.status}
-              onChange={() => (userStore.status = false)}
-              disabled={!userStore.isEditing}
-            />
-            Inactive
-          </label>
-        </label>
+      <div className={styles.formGroup}>
+        <label>Role:</label>
+        <select
+          value={userStore.role}
+          onChange={(e) =>
+            (userStore.role = e.target.value as "User" | "Admin" | "Guest")
+          }
+          className={inputClass}
+          disabled={!userStore.isEditing}
+        >
+          <option value="Admin">Admin</option>
+          <option value="User">User</option>
+          <option value="Guest">Guest</option>
+        </select>
       </div>
-      <div>
-        <label>
-          Role:
-          <select
-            value={userStore.role}
-            onChange={(e) =>
-              (userStore.role = e.target.value as "User" | "Admin" | "Guest")
-            }
-            disabled={!userStore.isEditing}
-          >
-            <option value="Admin">Admin</option>
-            <option value="User">User</option>
-            <option value="Guest">Guest</option>
-          </select>
-        </label>
-      </div>
-      <div>
+      <div className={styles.buttonGroup}>
         {userStore.isEditing ? (
           <>
-            <button onClick={handleSave}>Save</button>
-            <button onClick={() => userStore.cancelEdit()}>Cancel</button>
+            <Button onClick={handleSave} label="Save" />
+            <Button onClick={() => userStore.cancelEdit()} label="Cancel" />
           </>
         ) : (
           <>
-            <button onClick={() => userStore.setEditing(true)}>Edit</button>
-            <button onClick={() => userStore.cancelEdit()}>Cancel</button>
+            <Button onClick={() => userStore.setEditing(true)} label="Edit" />
+            <Button onClick={() => userStore.cancelEdit()} label="Cancel" />
           </>
         )}
       </div>

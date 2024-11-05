@@ -13,7 +13,9 @@ const UserItem: React.FC<CardItemProps> = ({ user }) => {
   return (
     <tr key={user.id}>
       <td className={styles.userName}>
-        <NavLink to={`/users/${user.id}`}>{user.name}</NavLink>
+        <NavLink
+          to={`/users/${user.id}`}
+        >{`${user.name} ${user.surname}`}</NavLink>
       </td>
       <td className={styles.userStatus}>
         {user.status ? "Active" : "Inactive"}
