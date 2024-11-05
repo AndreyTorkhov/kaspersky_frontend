@@ -1,8 +1,6 @@
 import React from "react";
-
 import { NavLink } from "react-router-dom";
 import { User } from "../../types/user";
-
 import styles from "./UserItem.module.scss";
 
 interface CardItemProps {

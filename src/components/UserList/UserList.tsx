@@ -1,6 +1,5 @@
 import UserItem from "../UserItem";
 import { User } from "../../types/user";
-
 import styles from "./UserList.module.scss";
 
 interface UserListProps {

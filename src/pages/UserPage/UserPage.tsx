@@ -1,12 +1,15 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { userStore } from "../../store/UserStore";
-import Button from "../../components/Button";
+import UserInfoField from "../../components/UserInfoFiled";
+import UserStatus from "../../components/UserStatus";
+import UserActions from "../../components/UserActions";
 import styles from "./UserPage.module.scss";
 
 const UserPage = observer(() => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (id) {
@@ -14,64 +17,37 @@ const UserPage = observer(() => {
     }
   }, [id]);
 
-  const handleSave = () => {
-    userStore.saveUser();
-  };
+  const handleSave = () => userStore.saveUser();
+  const handleBack = () => navigate(-1);
 
   if (!userStore.user) {
     return <div>Loading...</div>;
   }
 
-  const inputClass = userStore.isEditing
-    ? styles.enabledInput
-    : styles.disabledInput;
-
   return (
     <div className={styles.userContainer}>
       <h1 className={styles.title}>User Settings</h1>
-      <div className={styles.formGroup}>
-        <label>Name:</label>
-        <input
-          type="text"
-          value={userStore.name}
-          onChange={(e) => (userStore.name = e.target.value)}
-          className={inputClass}
-          disabled={!userStore.isEditing}
-        />
-      </div>
-      <div className={styles.formGroup}>
-        <label>Surname:</label>
-        <input
-          type="text"
-          value={userStore.surname}
-          onChange={(e) => (userStore.surname = e.target.value)}
-          className={inputClass}
-          disabled={!userStore.isEditing}
-        />
-      </div>
-      <div className={`${styles.formGroup} ${styles.statusGroup}`}>
-        <label>Status:</label>
-        <label>
-          <input
-            type="radio"
-            checked={userStore.status}
-            onChange={() => (userStore.status = true)}
-            disabled={!userStore.isEditing}
-            className={inputClass}
-          />
-          Active
-        </label>
-        <label>
-          <input
-            type="radio"
-            checked={!userStore.status}
-            onChange={() => (userStore.status = false)}
-            disabled={!userStore.isEditing}
-            className={inputClass}
-          />
-          Inactive
-        </label>
-      </div>
+
+      <UserInfoField
+        label="Name"
+        value={userStore.name}
+        onChange={(value) => (userStore.name = value)}
+        disabled={!userStore.isEditing}
+      />
+
+      <UserInfoField
+        label="Surname"
+        value={userStore.surname}
+        onChange={(value) => (userStore.surname = value)}
+        disabled={!userStore.isEditing}
+      />
+
+      <UserStatus
+        status={userStore.status}
+        setStatus={(value) => (userStore.status = value)}
+        disabled={!userStore.isEditing}
+      />
+
       <div className={styles.formGroup}>
         <label>Role:</label>
         <select
@@ -79,7 +55,9 @@ const UserPage = observer(() => {
           onChange={(e) =>
             (userStore.role = e.target.value as "User" | "Admin" | "Guest")
           }
-          className={inputClass}
+          className={
+            userStore.isEditing ? styles.enabledInput : styles.disabledInput
+          }
           disabled={!userStore.isEditing}
         >
           <option value="Admin">Admin</option>
@@ -87,19 +65,14 @@ const UserPage = observer(() => {
           <option value="Guest">Guest</option>
         </select>
       </div>
-      <div className={styles.buttonGroup}>
-        {userStore.isEditing ? (
-          <>
-            <Button onClick={handleSave} label="Save" />
-            <Button onClick={() => userStore.cancelEdit()} label="Cancel" />
-          </>
-        ) : (
-          <>
-            <Button onClick={() => userStore.setEditing(true)} label="Edit" />
-            <Button onClick={() => userStore.cancelEdit()} label="Cancel" />
-          </>
-        )}
-      </div>
+
+      <UserActions
+        isEditing={userStore.isEditing}
+        onSave={handleSave}
+        onCancel={() => userStore.cancelEdit()}
+        onEdit={() => userStore.setEditing(true)}
+        onBack={handleBack}
+      />
     </div>
   );
 });

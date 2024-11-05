@@ -1,9 +1,15 @@
-// .userName {
-//   font-size: 1.2rem;
-//   font-weight: bold;
-// }
+.userName {
+  padding: 10px;
+}
 
-// .userStatus,
-// .userRole {
-//   margin: 4px 0;
-// }
+.userName a {
+  text-decoration: none;
+}
+
+.userName a:hover {
+  text-decoration: underline;
+}
+
+.userStatus {
+  padding: 10px;
+}
