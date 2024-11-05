@@ -1,50 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getUserById } from "../../api/getUser";
-import { editUser } from "../../api/editUser";
-import { User } from "../../types/user";
+import { observer } from "mobx-react-lite";
+import { userStore } from "../../store/UserStore";
 
-function UserPage() {
+const UserPage = observer(() => {
   const { id } = useParams<{ id: string }>();
-  const [user, setUser] = useState<User | null>(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [status, setStatus] = useState(false);
-  const [role, setRole] = useState<"User" | "Admin" | "Guest">("User"); // Явное указание типа
 
   useEffect(() => {
     if (id) {
-      getUserById(Number(id))
-        .then((response) => {
-          const userData = response.data;
-          setUser(userData);
-          setName(userData.name);
-          setSurname(userData.surname);
-          setStatus(userData.status);
-          setRole(userData.role);
-        })
-        .catch((error) => {
-          console.error("Failed to fetch user:", error);
-        });
+      userStore.fetchUserById(Number(id));
     }
   }, [id]);
 
   const handleSave = () => {
-    if (user) {
-      const updatedUser: User = { ...user, name, surname, status, role };
-      editUser(Number(user.id), updatedUser)
-        .then(() => {
-          setUser(updatedUser);
-          setIsEditing(false);
-        })
-        .catch((error) => {
-          console.error("Failed to save user:", error);
-        });
-    }
+    userStore.saveUser();
   };
 
-  if (!user) {
+  if (!userStore.user) {
     return <div>Loading...</div>;
   }
 
@@ -56,9 +28,9 @@ function UserPage() {
           Name:
           <input
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            disabled={!isEditing}
+            value={userStore.name}
+            onChange={(e) => (userStore.name = e.target.value)}
+            disabled={!userStore.isEditing}
           />
         </label>
       </div>
@@ -67,9 +39,9 @@ function UserPage() {
           Surname:
           <input
             type="text"
-            value={surname}
-            onChange={(e) => setSurname(e.target.value)}
-            disabled={!isEditing}
+            value={userStore.surname}
+            onChange={(e) => (userStore.surname = e.target.value)}
+            disabled={!userStore.isEditing}
           />
         </label>
       </div>
@@ -79,20 +51,18 @@ function UserPage() {
           <label>
             <input
               type="radio"
-              value="Active"
-              checked={status === true}
-              onChange={() => setStatus(true)}
-              disabled={!isEditing}
+              checked={userStore.status}
+              onChange={() => (userStore.status = true)}
+              disabled={!userStore.isEditing}
             />
             Active
           </label>
           <label>
             <input
               type="radio"
-              value="Inactive"
-              checked={status === false}
-              onChange={() => setStatus(false)}
-              disabled={!isEditing}
+              checked={!userStore.status}
+              onChange={() => (userStore.status = false)}
+              disabled={!userStore.isEditing}
             />
             Inactive
           </label>
@@ -102,11 +72,11 @@ function UserPage() {
         <label>
           Role:
           <select
-            value={role}
+            value={userStore.role}
             onChange={(e) =>
-              setRole(e.target.value as "User" | "Admin" | "Guest")
+              (userStore.role = e.target.value as "User" | "Admin" | "Guest")
             }
-            disabled={!isEditing}
+            disabled={!userStore.isEditing}
           >
             <option value="Admin">Admin</option>
             <option value="User">User</option>
@@ -115,17 +85,20 @@ function UserPage() {
         </label>
       </div>
       <div>
-        {isEditing ? (
+        {userStore.isEditing ? (
           <>
             <button onClick={handleSave}>Save</button>
-            <button onClick={() => setIsEditing(false)}>Cancel</button>
+            <button onClick={() => userStore.cancelEdit()}>Cancel</button>
           </>
         ) : (
-          <button onClick={() => setIsEditing(true)}>Edit</button>
+          <>
+            <button onClick={() => userStore.setEditing(true)}>Edit</button>
+            <button onClick={() => userStore.cancelEdit()}>Cancel</button>
+          </>
         )}
       </div>
     </div>
   );
-}
+});
 
 export default UserPage;

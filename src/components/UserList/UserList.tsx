@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
+
 import { getAllUsers } from "../../api/getAllUsers";
 import { User } from "../../types/user";
+
+import Search from "../Search";
+import UserItem from "../UserItem";
+
 import styles from "./UserList.module.scss";
-import { NavLink } from "react-router-dom";
 
 function UserList() {
   const [users, setUsers] = useState<User[]>([]);
@@ -18,20 +22,9 @@ function UserList() {
       });
   }, [search]);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-  };
-
   return (
     <div className={styles.userListContainer}>
-      <h1>User List</h1>
-      <input
-        type="text"
-        className={styles.searchInput}
-        placeholder="Search..."
-        value={search}
-        onChange={handleSearchChange}
-      />
+      <Search search={search} setSearch={setSearch} />
       <table className={styles.table}>
         <thead>
           <tr>
@@ -42,15 +35,7 @@ function UserList() {
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user.id}>
-              <td className={styles.userName}>
-                <NavLink to={`/users/${user.id}`}>{user.name}</NavLink>
-              </td>
-              <td className={styles.userStatus}>
-                {user.status ? "Active" : "Inactive"}
-              </td>
-              <td>{user.role}</td>
-            </tr>
+            <UserItem key={user.id} user={user} />
           ))}
         </tbody>
       </table>

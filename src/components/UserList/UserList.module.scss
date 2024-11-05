@@ -1,18 +1,10 @@
 .userListContainer {
   max-width: 600px;
-  margin: 20px auto; /* Отступ от верхнего и боковых краев */
+  margin: 20px auto;
   padding: 20px;
-  border: 2px solid black; /* Черная рамка вокруг всей таблицы */
+  border: 2px solid black;
   border-radius: 8px;
   text-align: center;
-}
-
-.searchInput {
-  width: 90%; /* Отступ от краев */
-  padding: 8px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
 }
 
 .table {
@@ -38,12 +30,4 @@
 
 .userName a:hover {
   text-decoration: underline;
-}
-
-.userStatus {
-  color: #28a745;
-}
-
-.userStatus:empty {
-  color: #dc3545;
 }
