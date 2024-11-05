@@ -1,0 +1,49 @@
+.userList {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+
+  h1 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f4f4f4;
+      color: #666;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .userName {
+      color: #4a86e8; // Цвет для имени пользователя
+      font-weight: bold;
+
+      &:hover {
+        text-decoration: underline; // Подчеркивание при наведении
+      }
+    }
+
+    .userStatus {
+      color: green; // Зелёный цвет для статуса активного пользователя
+      font-weight: bold;
+
+      &.inactive {
+        color: red; // Красный цвет для статуса неактивного пользователя
+      }
+    }
+  }
+}

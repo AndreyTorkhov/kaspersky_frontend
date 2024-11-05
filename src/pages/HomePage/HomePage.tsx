@@ -1,13 +1,13 @@
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 import UserList from "../../components/UserList/UserList";
 
 function HomePage() {
   return (
     <>
       <ul>
-        <li>
+        {/* <li>
           <NavLink to="/user">User</NavLink>
-        </li>
+        </li> */}
         {/* <li>
           <NavLink to="/people/?page=1">People</NavLink>
         </li> */}

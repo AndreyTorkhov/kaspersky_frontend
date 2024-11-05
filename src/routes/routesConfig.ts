@@ -6,14 +6,14 @@ const routesConfig = [
     path: "/",
     component: HomePage,
   },
+  // {
+  //   path: "/user",
+  //   component: UserPage,
+  // },
   {
-    path: "/user",
+    path: "/users/:id",
     component: UserPage,
   },
-  //   {
-  //     path: "/user/:id",
-  //     component: UserPage,
-  //   },
   //   {
   //     path: "*",
   //     component: NotFoundPage,
