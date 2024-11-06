@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getAllUsers } from "../../api/getAllUsers";
 import { User } from "../../types/user";
 import Search from "../../components/Search";
@@ -12,14 +12,20 @@ function HomePage() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const id = useRef<number | null>();
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
+    if (id.current) {
+      clearTimeout(id.current);
+      id.current = null;
+    }
+
+    id.current = setTimeout(() => {
       setSearch(searchQuery);
       setPage(1);
     }, 500);
 
-    return () => clearTimeout(timeoutId);
+    return () => clearTimeout(id.current!);
   }, [searchQuery]);
 
   useEffect(() => {
